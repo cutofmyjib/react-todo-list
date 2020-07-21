@@ -23,9 +23,32 @@
   list-style-type: none;
 }
 .todo-item {
+  text-align: left;
+  padding: 5px;
+}
 
+.todo-item-done {
+  text-decoration: line-through;
+  padding: 5px;
+  text-align: left;
 }
 
 .App-link {
   color: #61dafb;
 }
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 50px;
+}
+
+ul {
+  padding: 0;
+}
+
+form {
+  display: flex;
+}
+

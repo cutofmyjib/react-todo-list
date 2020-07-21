@@ -7,18 +7,20 @@ class App extends React.Component {
     super(props);
     this.state = {
       todos: [
-        {id: 1, todoContent: 'drink coffee'},
-        {id: 2, todoContent: 'watch hulu'}
+        {id: 1, done: false, todoContent: 'drink coffee'},
+        {id: 2, done: false, todoContent: 'watch hulu'}
       ],
       userEntry: ''
     };
   };
 
   handleClick = (id) => {
-    const todosLeft = this.state.todos.filter( todo => {
-      return todo.id !== id;
-    });
-    this.setState({todos: todosLeft});
+    let todosLeft = this.state.todos;
+    todosLeft = todosLeft.map( todo => {
+      return todo.id === id ? {...todo, done: !todo.done} : todo
+    }); 
+    
+    this.setState(({todos: todosLeft}));
   }
 
   handleSubmit = (e) => {
@@ -30,6 +32,7 @@ class App extends React.Component {
         userEntry: ''
       }
     });
+    
     //use hooks later
   }
 
@@ -43,13 +46,14 @@ class App extends React.Component {
         <header className="App-header">
           To Do List (React)
         </header>
-        <form onSubmit={this.handleSubmit}>
-          <input type="text" name="todo" onChange={this.handleChange} value={this.state.userEntry} />
-          <input type="submit" value="Submit"/>
-        </form>
-        <Todos  props={this.state.todos}
-                handleClick={this.handleClick} />
-
+        <main>
+          <form onSubmit={this.handleSubmit}>
+            <input type="text" name="todo" onChange={this.handleChange} value={this.state.userEntry} />
+            <input type="submit" value="Submit"/>
+          </form>
+          <Todos  props={this.state.todos}
+                  handleClick={this.handleClick} />
+        </main>
       </div>
     );
   }
