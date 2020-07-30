@@ -1,62 +1,52 @@
 import React from 'react';
+import { useState } from 'react';
 import Todos from './Todos';
 import './App.css';
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      todos: [
-        {id: 1, done: false, todoContent: 'drink coffee'},
-        {id: 2, done: false, todoContent: 'watch hulu'}
-      ],
-      userEntry: ''
-    };
-  };
+const App = () => {
+  const [todos, setTodos] = useState([
+    {id: 1, done: false, todoContent: 'drink coffee'},
+    {id: 2, done: false, todoContent: 'watch hulu'}
+  ]);
 
-  handleClick = (id) => {
-    let todosLeft = this.state.todos;
+  const [userEntry, setUserEntry] = useState('');
+
+  const handleClick = (id) => {
+    let todosLeft = todos;
     todosLeft = todosLeft.map( todo => {
       return todo.id === id ? {...todo, done: !todo.done} : todo
     }); 
     
-    this.setState(({todos: todosLeft}));
+    setTodos(todosLeft);
   }
 
-  handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     //userEntry is reset after setting state
-    this.setState(({ todos, userEntry }) => {
-      return {
-        todos: [...todos, { id: todos.length + 1, todoContent: userEntry }],
-        userEntry: ''
-      }
-    });
-    
-    //use hooks later
-  }
+    const updatedTodos = [...todos, { id: todos.length + 1, todoContent: userEntry }];
+    setTodos(updatedTodos);
+    setUserEntry('');
+  };
 
-  handleChange = (e) => {
-    this.setState({userEntry: e.target.value});
-  }
+  const handleChange = (e) => {
+    setUserEntry(e.target.value);
+  };
 
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          To Do List (React)
-        </header>
-        <main>
-          <form onSubmit={this.handleSubmit}>
-            <input type="text" name="todo" onChange={this.handleChange} value={this.state.userEntry} />
-            <input type="submit" value="Submit"/>
-          </form>
-          <Todos  props={this.state.todos}
-                  handleClick={this.handleClick} />
-        </main>
-      </div>
-    );
-  }
+  return (
+    <div className="App">
+      <header className="App-header">
+        To Do List (React)
+      </header>
+      <main>
+        <form onSubmit={handleSubmit}>
+          <input type="text" name="todo" onChange={handleChange} value={userEntry} />
+          <input type="submit" value="Submit"/>
+        </form>
+        <Todos  props={todos}
+                handleClick={handleClick} />
+      </main>
+    </div>
+  );
 }
 
 export default App;
